@@ -1,9 +1,10 @@
 #include "nodes.h"
 #include "edges.h"
 #include <stdlib.h>
+#include <stdio.h>
 
 node* newNode(int node_num, pedge edges, node* next) {
-    pnode n = (node*)malloc(sizeof(node));
+    node* n = (node*)malloc(sizeof(node));
     if(n == NULL)
         return NULL;
 
@@ -29,7 +30,7 @@ void removeNode(pnode n) {
 }
 
 void printNode(pnode n) {
-    printf(" | %d | ", n->node_num);
+    printf(" | %d | \n", n->node_num);
     pedge current_edge = n->edges;
     while(current_edge != NULL) {
         printf("---%d--->%d\n", current_edge->weight, current_edge->endpoint->node_num);

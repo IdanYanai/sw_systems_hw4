@@ -1,6 +1,3 @@
-#include "nodes.h"
-#include "edges.h"
-
 void delete_node_cmd(pnode *head);
 void build_graph_cmd(pnode *head);
 void insert_node_cmd(pnode *head);

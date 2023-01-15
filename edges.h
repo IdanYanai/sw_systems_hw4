@@ -1,4 +1,4 @@
-typedef struct node *pnode;
+typedef struct node *pnode;;
 
 typedef struct edge {
     int weight;

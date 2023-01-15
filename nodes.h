@@ -1,4 +1,4 @@
-typedef struct edge *pedge;
+typedef struct edge *pedge;;
 
 typedef struct node {
     int node_num;
