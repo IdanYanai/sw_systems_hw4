@@ -11,18 +11,24 @@ void delete_node_cmd(pnode *head) {
     // remove incoming edges
     pnode current_node = *head;
     pedge current_edge;
-    pedge last_edge = NULL;
+    pedge last_edge;
     while(current_node != NULL) {
         current_edge = current_node->edges;
-        while((current_edge->endpoint->node_num != node_num) && (current_edge != NULL)) {
+        last_edge = NULL;
+        while(current_edge != NULL) {
+            if(current_edge->endpoint->node_num == node_num)
+                break;
             last_edge = current_edge;
             current_edge = current_edge->next;
         }
         if(current_edge != NULL) {
             if(last_edge != NULL)
                 last_edge->next = current_edge->next;
+            else
+                current_node->edges = current_edge->next;
             free(current_edge);
         }
+        current_node = current_node->next;
     }
 
     // remove the node from the list
@@ -135,8 +141,11 @@ void insert_node_cmd(pnode *head) {
 
     // check if node exists already
     current_node = *head;
-    while(current_node->node_num != node_num && current_node != NULL)
-            current_node = current_node->next;
+    while(current_node != NULL) {
+        if(current_node->node_num == node_num)
+            break;
+        current_node = current_node->next;
+    }
 
     // if node doesnt exist create new one at end of list
     if(current_node == NULL) {
