@@ -23,4 +23,4 @@ main.o: main.c nodes.h edges.h algo.h
 c: clean
 
 clean:
-	rm -f *.o 
+	rm -f *.o main

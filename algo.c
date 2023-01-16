@@ -169,9 +169,49 @@ void deleteGraph_cmd(pnode* head) {
 }
 
 void shortsPath_cmd(pnode head) {
+    int path = -1, src_num, dest_num;
+    pnode src, dest, iterator;
+    scanf(" %d %d", &src_num, &dest_num);
 
+    // find source node
+    iterator = head;
+    while(iterator->node_num != src_num)
+        iterator = iterator->next;
+    src = iterator;
+
+    // find dest node
+    iterator = head;
+    while(iterator->node_num != dest_num)
+        iterator = iterator->next;
+    dest = iterator;
+
+    // find shortest path;
+
+
+
+    printf("Dijsktra shortest path: %d\n", path);
 }
 
 void TSP_cmd(pnode head) {
+    int path = -1;
+    int len;
+    scanf(" %d", &len);
+    pnode nodes[len];
+    pnode current_node;
+    int node_num;
 
+    // get nodes
+    for(int i=0;i<len;i++) {
+        scanf(" %d", &node_num);
+        current_node = head;
+        while(current_node->node_num != node_num)
+            current_node = current_node->next;
+        nodes[i] = current_node;
+    }
+
+    // calculate path
+
+
+
+    printf("TSP shortest path: %d\n", path);
 }

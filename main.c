@@ -10,16 +10,31 @@ int main() {
     while(command != EOF) {
         command = getc(stdin);
         printf("COMMAND: %c\n", command);
-        if(command == 'A')
+        switch (command) {
+        case 'A':
             build_graph_cmd(&graph);
-        else if(command == 'B')
+            break;
+
+        case 'B':
             insert_node_cmd(&graph);
-        else if(command == 'D')
+            break;
+
+        case 'D':
             delete_node_cmd(&graph);
-        else if(command == 'S')
+            break;
+        
+        case 'S':
             shortsPath_cmd(graph);
-        else if(command == 'P')
-            TSP_cmd(graph);  
+            break;
+
+        case 'T':
+            TSP_cmd(graph);
+            break;
+
+        default:
+            break;
+        }
+
         printGraph_cmd(graph);
     }
     return 0;
