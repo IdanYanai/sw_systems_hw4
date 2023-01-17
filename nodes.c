@@ -11,6 +11,7 @@ node* newNode(int node_num, pedge edges, node* next) {
     n->next = next;
     n->node_num = node_num;
     n->edges = edges;
+    n->distance = -1;
 
     return n;
 }

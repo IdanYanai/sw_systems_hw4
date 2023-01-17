@@ -110,7 +110,6 @@ void build_graph_cmd(pnode *head) {
 
         current_node->edges = edges;
     }
-    printf("finished");
 }
 
 void insert_node_cmd(pnode *head) {
@@ -170,39 +169,94 @@ void printGraph_cmd(pnode head) {
 void deleteGraph_cmd(pnode* head) {
     pnode next;
     pnode current_node = *head;
-    while(head != NULL) {
+    while(current_node != NULL) {
         next = current_node->next;
         removeNode(current_node);
         current_node = next;
     }
+    (*head) = NULL;
 }
 
 void shortsPath_cmd(pnode head) {
-    int path = -1, src_num, dest_num;
+    int src_num, dest_num, len=0;
     pnode src, dest, iterator;
+    pnode* unvisited = (pnode*)malloc(100 * sizeof(pnode));
     scanf(" %d %d", &src_num, &dest_num);
 
-    // find source node
+    // find source and destination nodes, and number of nodes
     iterator = head;
-    while(iterator->node_num != src_num)
+    while(iterator != NULL) {
+        if(iterator->node_num == src_num) {
+            src = iterator;
+            src->distance = 0;
+        }
+        if(iterator->node_num == dest_num)
+            dest = iterator;
+        unvisited[len] = iterator;
+        len++;
         iterator = iterator->next;
-    src = iterator;
-
-    // find dest node
-    iterator = head;
-    while(iterator->node_num != dest_num)
-        iterator = iterator->next;
-    dest = iterator;
+    }
+    unvisited = (pnode*)realloc(unvisited, len * sizeof(pnode));
 
     // find shortest path;
+    pnode min, current_node;
+    int min_dis, isVisited;
+    pedge current_edge;
+    current_node = src;
+    while(1) {
+        current_edge = current_node->edges;
 
+        while(current_edge != NULL) {
+            iterator = current_edge->endpoint;
 
+            // if node already visited continue
+            isVisited = 1;
+            for(int i=0;i<len;i++)
+                if(unvisited[i] == iterator) {
+                    isVisited = 0;
+                    break;
+                }
+            
+            if(isVisited == 0) {
+                // relax function basically
+                if(iterator->distance == -1) // minus 1 is infinity
+                    iterator->distance = (current_node->distance + current_edge->weight);
+                else if(iterator->distance > (current_node->distance + current_edge->weight))
+                    iterator->distance = (current_node->distance + current_edge->weight);
+            }
 
-    printf("Dijsktra shortest path: %d\n", path);
+            current_edge = current_edge->next;
+        }
+
+        // if last node then end
+        if(len == 1)
+            break;
+
+        // remove current node from unvisited
+        int index;
+        for(int i=0;i<len;i++)
+            if(unvisited[i] == current_node) {
+                index = i;
+                break;
+            }
+        for(int i=index;i<len-1;i++)
+            unvisited[i] = unvisited[i+1];
+        unvisited = (pnode*)realloc(unvisited, (--len)*sizeof(pnode));
+
+        // find next node
+        min_dis = 99999999;
+        for(int i=0;i<len;i++)
+            if(unvisited[i]->distance < min_dis) {
+                min_dis = unvisited[i]->distance;
+                min = unvisited[i];
+            }
+        current_node = min;
+    }
+
+    printf("Dijsktra shortest path: %d\n", dest->distance);
 }
 
 void TSP_cmd(pnode head) {
-    int path = -1;
     int len;
     scanf(" %d", &len);
     pnode nodes[len];
@@ -219,8 +273,52 @@ void TSP_cmd(pnode head) {
     }
 
     // calculate path
+    pnode arr[len-1];
+    for(int j=1;j<len;j++)
+        arr[j-1] = nodes[j];
+    printf("TSP shortest path: %d\n", TSP(nodes[0], arr, (len-1), nodes[0]));
+}
 
+int TSP(pnode src, pnode unvisited[], int len, pnode trueSrc) {
+    pedge iterator = src->edges;
+    if(len == 0) {
+        while(iterator != NULL) {
+            if(iterator->endpoint == trueSrc)
+                return iterator->weight;
+            iterator = iterator->next;
+        }
+        return -1;
+    }
 
+    int min = -1;
+    int value, index;
+    for(int i=0;i<len;i++) {
+        if(len == 1)
+            value = TSP(unvisited[i], unvisited, len-1, trueSrc);
+        else {
+            pnode arr[len-1];
+            index = 0;
+            for(int j=0;j<len;j++)
+                if(i != j)
+                    arr[index++] = unvisited[j];
+            value = TSP(unvisited[i], arr, len-1, trueSrc);
+        }
 
-    printf("TSP shortest path: %d\n", path);
+        if(value != -1) {
+            iterator = src->edges;
+            while(iterator != NULL) {
+                if(iterator->endpoint == unvisited[i])
+                    value += iterator->weight;
+                iterator = iterator->next;
+            }
+            if(iterator == NULL)
+                continue;
+
+            if(value < min)
+                min = value;
+            else if(min == -1)
+                min = value;
+        }
+    }
+    return min;
 }

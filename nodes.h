@@ -4,6 +4,7 @@ typedef struct node {
     int node_num;
     pedge edges;
     struct node *next;
+    int distance;
 } node, *pnode;
 
 node* newNode(int node_num, pedge edges, node* next);

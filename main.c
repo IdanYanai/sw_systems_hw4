@@ -38,5 +38,7 @@ int main() {
             break;
         }
     }
+
+    deleteGraph_cmd(&graph);
     return 0;
 }
