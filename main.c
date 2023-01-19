@@ -13,17 +13,17 @@ int main() {
         switch (command) {
         case 'A':
             build_graph_cmd(&graph);
-            printGraph_cmd(graph);
+            // printGraph_cmd(graph);
             break;
 
         case 'B':
             insert_node_cmd(&graph);
-            printGraph_cmd(graph);
+            // printGraph_cmd(graph);
             break;
 
         case 'D':
             delete_node_cmd(&graph);
-            printGraph_cmd(graph);
+            // printGraph_cmd(graph);
             break;
         
         case 'S':
