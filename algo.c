@@ -259,7 +259,7 @@ void shortsPath_cmd(pnode head) {
 
 void shortsPath(pnode head, int src_num, int dest_num) {
     int len=0;
-    pnode src, dest, iterator;
+    pnode src, iterator;
     pnode* unvisited = (pnode*)malloc(100 * sizeof(pnode));
 
     // find source and destination nodes, and number of nodes
@@ -270,8 +270,6 @@ void shortsPath(pnode head, int src_num, int dest_num) {
             src = iterator;
             src->distance = 0;
         }
-        if(iterator->node_num == dest_num)
-            dest = iterator;
         unvisited[len] = iterator;
         len++;
         iterator = iterator->next;

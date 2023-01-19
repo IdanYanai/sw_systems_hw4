@@ -1,9 +1,9 @@
 CC=gcc
 FLAGS= -Wall -g
 
-all: main
+all: graph
 
-main: main.o nodes.o edges.o algo.o
+graph: main.o nodes.o edges.o algo.o
 	$(CC) $(FLAGS) -o $@ $^
 
 nodes.o: nodes.c nodes.h
