@@ -254,7 +254,7 @@ void shortsPath_cmd(pnode head) {
         current_node = min;
     }
 
-    printf("Dijsktra shortest path: %d\n", dest->distance);
+    printf("Dijsktra shortest path: %d \n", dest->distance);
 }
 
 void shortsPath(pnode head, int src_num, int dest_num) {
@@ -420,9 +420,9 @@ void TSP_cmd(pnode head) {
             }
     }
     if((*pmin) == 99999)
-        printf("TSP shortest path: -1\n");
+        printf("TSP shortest path: -1 \n");
     else    
-        printf("TSP shortest path: %d\n", (*pmin));
+        printf("TSP shortest path: %d \n", (*pmin));
 }
 
 void swap(pnode* a, pnode* b) {
