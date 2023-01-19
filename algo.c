@@ -154,8 +154,16 @@ void insert_node_cmd(pnode *head) {
         
         current_node->next = newNode(node_num, edges, NULL);
     }
-    else // if node exists we simply give it the new edges
+    else {// if node exists we free its current edges and give it the new list
+        iterator = current_node->edges;
+        pedge saver;
+        while(iterator != NULL) {
+            saver = iterator->next;
+            free(iterator);
+            iterator = saver;
+        }
         current_node->edges = edges;
+    }
 }
 
 void printGraph_cmd(pnode head) {
@@ -198,6 +206,8 @@ void shortsPath_cmd(pnode head) {
         iterator = iterator->next;
     }
     unvisited = (pnode*)realloc(unvisited, len * sizeof(pnode));
+    if(unvisited == NULL)
+        printf("OUT OF MEMORY");
 
     // find shortest path;
     pnode min, current_node;
@@ -243,7 +253,9 @@ void shortsPath_cmd(pnode head) {
         for(int i=index;i<len-1;i++)
             unvisited[i] = unvisited[i+1];
         unvisited = (pnode*)realloc(unvisited, (--len)*sizeof(pnode));
-
+        if(unvisited == NULL)
+            printf("OUT OF MEMORY");
+        
         // find next node
         min_dis = 99999999;
         for(int i=0;i<len;i++)
@@ -255,6 +267,7 @@ void shortsPath_cmd(pnode head) {
     }
 
     printf("Dijsktra shortest path: %d \n", dest->distance);
+    free(unvisited);
 }
 
 void shortsPath(pnode head, int src_num, int dest_num) {
@@ -275,6 +288,8 @@ void shortsPath(pnode head, int src_num, int dest_num) {
         iterator = iterator->next;
     }
     unvisited = (pnode*)realloc(unvisited, len * sizeof(pnode));
+    if(unvisited == NULL)
+        printf("OUT OF MEMORY");
 
     // find shortest path;
     pnode min, current_node;
@@ -319,7 +334,10 @@ void shortsPath(pnode head, int src_num, int dest_num) {
             }
         for(int i=index;i<len-1;i++)
             unvisited[i] = unvisited[i+1];
+        
         unvisited = (pnode*)realloc(unvisited, (--len)*sizeof(pnode));
+        if(unvisited == NULL)
+            printf("OUT OF MEMORY");
 
         // find next node
         min_dis = 99999999;
@@ -328,10 +346,13 @@ void shortsPath(pnode head, int src_num, int dest_num) {
                 min_dis = unvisited[i]->distance;
                 min = unvisited[i];
             }
-        if(min_dis == -1)
+        if(min_dis == -1) {
+            free(unvisited);
             return;
+        }
         current_node = min;
     }
+    free(unvisited);
 }
 
 void TSP_cmd(pnode head) {
